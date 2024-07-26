@@ -6,6 +6,11 @@ var port = process.argv[2] || 8080;
 
 http.createServer(function (request, response) {
   var uri = url.parse(request.url).pathname;
+    if (path.normalize(decodeURIComponent(uri)) !== decodeURIComponent(uri)) {
+        response.statusCode = 403;
+        response.end();
+        return;
+    }
   var filename = path.join(process.cwd(), uri);
 
   fs.exists(filename, function (exists) {
